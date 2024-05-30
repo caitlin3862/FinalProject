@@ -31,7 +31,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        //startMusic();
+        startMusic();
     }
 
 
