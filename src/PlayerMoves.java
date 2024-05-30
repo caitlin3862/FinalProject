@@ -1,26 +1,32 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class PlayerMoves {
+    private ArrayList<Move> moves;
     private int score;
-    private int x;
-    private int y;
 
-    public PlayerMoves(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public PlayerMoves() {
         score = 0;
+        moves = new ArrayList<>();
+    }
+
+    public ArrayList<Move> getPlayerMoves(){
+        return moves;
     }
 
     public int getScore() {
         return score;
     }
 
+    public void addToCombo(Move m){
+        moves.add(m);
+    }
 
     public Rectangle spriteRect(BufferedImage img) {
         int imageHeight = img.getHeight();
         int imageWidth = img.getWidth();
-        Rectangle rect = new Rectangle(x, (int) y, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle(img.getWidth(), img.getHeight(), imageWidth, imageHeight);
         return rect;
     }
 
