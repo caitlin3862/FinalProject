@@ -20,8 +20,9 @@ public class Boss {
 
     public Boss() {
         try {
-            this.sprite = ImageIO.read(new File(img));
-            angrySprite = ImageIO.read(new File(angryImg));
+            // insert proper images
+            sprite = ImageIO.read(new File(""));
+            angrySprite = ImageIO.read(new File(""));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
