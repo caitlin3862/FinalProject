@@ -18,9 +18,9 @@ public class Boss {
     private int y;
 
 
-    public Boss(String img, String angryImg) {
+    public Boss() {
         try {
-            sprite = ImageIO.read(new File(img));
+            this.sprite = ImageIO.read(new File(img));
             angrySprite = ImageIO.read(new File(angryImg));
         } catch (IOException e) {
             System.out.println(e.getMessage());
