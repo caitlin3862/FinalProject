@@ -14,8 +14,11 @@ import java.io.IOException;
 public class GraphicsPanel extends JPanel implements MouseListener, ActionListener {
     private BufferedImage titleBg;
     private BufferedImage playButton;
+    private BufferedImage bigPlayButton;
     private BufferedImage exitButton;
-    private BufferedImage instructionButton;
+    private BufferedImage bigExitButton;
+    private BufferedImage rulesButton;
+    private BufferedImage bigRulesbutton;
     private Clip song;
 
 
@@ -24,10 +27,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     public GraphicsPanel(){
         try {
-            //titleBg = ImageIO.read(new File("src/homeScreenImages/holder.png"));
-            playButton = ImageIO.read(new File("src/homeScreenImages/holder.png"));
-            exitButton = ImageIO.read(new File("src/homeScreenImages/holder.png"));
-            instructionButton = ImageIO.read(new File("src/homeScreenImages/holder.png"));
+            titleBg = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
+            playButton = ImageIO.read(new File("src/homeScreenImgs/play.png"));
+            bigPlayButton = ImageIO.read(new File("src/homeScreenImgs/bigPlay.png"));
+            exitButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
+            bigExitButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
+            rulesButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
+            bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -39,7 +45,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     // controls the images on the window
     public void paintComponent(Graphics g){
         super.paintComponent(g); // add js cuz
-        //g.drawImage(titleBg,0,0,null);
+        g.drawImage(titleBg,0,0,null);
 
 
         //Graphics2D g2 = (Graphics2D) g;
