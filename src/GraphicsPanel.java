@@ -30,14 +30,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             titleBg = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
             playButton = ImageIO.read(new File("src/homeScreenImgs/play.png"));
             bigPlayButton = ImageIO.read(new File("src/homeScreenImgs/bigPlay.png"));
-            exitButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
-            bigExitButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
-            rulesButton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
-            bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/holder.png"));
+            exitButton = ImageIO.read(new File("src/homeScreenImgs/exit.png"));
+            bigExitButton = ImageIO.read(new File("src/homeScreenImgs/bigExit.png"));
+            rulesButton = ImageIO.read(new File("src/homeScreenImgs/rules.png"));
+            bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/bigRules.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        startMusic();
     }
 
 
@@ -46,6 +45,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     public void paintComponent(Graphics g){
         super.paintComponent(g); // add js cuz
         g.drawImage(titleBg,0,0,null);
+        g.drawImage(exitButton, 250, 550,null);
+        g.drawImage(playButton,606,550,null);
+        g.drawImage(rulesButton, 953, 550,null);
+
+        //g.drawImage(bigExitButton, 250,550,null);
+        //g.drawImage(bigPlayButton, 595, 546, null);
+        //g.drawImage(bigRulesbutton, 952, 550,null);
+
 
 
         //Graphics2D g2 = (Graphics2D) g;
