@@ -10,8 +10,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-public class GraphicsPanel extends JPanel implements MouseListener, ActionListener, MouseMotionListener {
-    private BufferedImage titleBg;
+public class GraphicsPanel extends JPanel implements MouseListener, ActionListener, MouseMotionListener, KeyListener {
+    private BufferedImage background;
     private BufferedImage playButton;
     private BufferedImage bigPlayButton;
     private BufferedImage exitButton;
@@ -30,7 +30,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     public GraphicsPanel(){
         try {
-            titleBg = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
+            background = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
             playButton = ImageIO.read(new File("src/homeScreenImgs/play.png"));
             bigPlayButton = ImageIO.read(new File("src/homeScreenImgs/bigPlay.png"));
             exitButton = ImageIO.read(new File("src/homeScreenImgs/exit.png"));
@@ -41,6 +41,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             System.out.println(e.getMessage());
         }
         addMouseListener(this);
+        addKeyListener(this);
         addMouseMotionListener(this);
         playButtonX = 606;
     }
@@ -50,7 +51,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     // controls the images on the window
     public void paintComponent(Graphics g){
         super.paintComponent(g); // add js cuz
-        g.drawImage(titleBg,0,0,null);
+        g.drawImage(background,0,0,null);
         g.drawImage(exitButton, 250, 550,null);
         g.drawImage(playButton,playButtonX,550,null);
         g.drawImage(rulesButton, 953, 550,null);
@@ -67,6 +68,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         //g2.setStroke(new BasicStroke(10)); // changes the weight of the line
     }
 
+
+    /* MOUSE LISTENER METHODS */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -83,9 +86,15 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             if (exitRect.contains(e.getPoint())){
                 System.exit(0);
             }
-        } else {
-            Point clickLocation = e.getPoint();
-
+            if (playRect.contains(e.getPoint())){
+                //background = img;
+                repaint();
+            }
+            if (rulesRect.contains(e.getPoint())){
+                //background = img;
+                repaint();
+                //somehow remove the buttons and then replace them after you exit the rules page
+            }
         }
     }
 
@@ -102,11 +111,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     }
 
+    /* ACTION LISTENER METHODS */
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
     }
 
+    /* MOUSE MOTION LISTENER METHODS */
     @Override
     public void mouseDragged(MouseEvent e) {
 
@@ -146,6 +158,24 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         }
     }
 
+    /* KEY LISTENER METHODS */
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    /* PRIVATE HELPER METHODS */
+
     private void startMusic(){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/gummyBearSong.wav").getAbsoluteFile());
@@ -156,6 +186,5 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             System.out.println(e.getMessage());
         }
     }
+
 }
-
-
