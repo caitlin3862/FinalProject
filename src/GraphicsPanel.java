@@ -80,7 +80,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {  // left mouse click
-            Point clickLocation = e.getPoint();
+            if (exitRect.contains(e.getPoint())){
+                System.exit(0);
+            }
         } else {
             Point clickLocation = e.getPoint();
 
@@ -110,6 +112,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     }
 
+    //https://stackoverflow.com/questions/34461186/how-to-detect-mouse-hover-on-an-image-drawn-from-paintcomponents-drawimage-m
     @Override
     public void mouseMoved(MouseEvent e) {
         if (exitRect.contains(e.getPoint())){
