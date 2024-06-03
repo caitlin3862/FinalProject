@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 public class GraphicsPanel extends JPanel implements MouseListener, ActionListener, MouseMotionListener, KeyListener {
     private BufferedImage background;
+    private BufferedImage danceStage;
     private BufferedImage playButton;
     private BufferedImage bigPlayButton;
     private BufferedImage exitButton;
@@ -37,6 +38,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             bigExitButton = ImageIO.read(new File("src/homeScreenImgs/bigExit.png"));
             rulesButton = ImageIO.read(new File("src/homeScreenImgs/rules.png"));
             bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/bigRules.png"));
+
+            danceStage = ImageIO.read(new File("src/danceStage.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -87,7 +90,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 System.exit(0);
             }
             if (playRect.contains(e.getPoint())){
-                //background = img;
+                background = danceStage;
+
                 repaint();
             }
             if (rulesRect.contains(e.getPoint())){
