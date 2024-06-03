@@ -7,7 +7,7 @@ public class MainFrame implements Runnable {
     public MainFrame() {
         JFrame frame = new JFrame("Dance Game"); // title of the window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // makes it so you can exit the window
-        frame.setSize(1400,777); // sets the size of the window
+        frame.setSize(1400,815); // sets the size of the window
         frame.setLocation(10, 10); // sets where the window first appears on the screen
 
 
