@@ -19,13 +19,26 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage bigExitButton;
     private BufferedImage rulesButton;
     private BufferedImage bigRulesbutton;
+    private Move one;
+    private Move two;
+    private Move three;
+    private Move four;
+    private Move five;
+    private Move six;
+    private Move seven;
+    private Move eight;
+    private Move nine;
+
+    private Boss miller;
+    private PlayerMoves player;
     private Rectangle exitRect;
     private Rectangle playRect;
     private Rectangle rulesRect;
     private Clip song;
     private int playButtonX;
-
-
+    private boolean[] pressedKeys;
+    private boolean isTitleScreen;
+    private boolean playingGame;
 
 
 
@@ -44,9 +57,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             System.out.println(e.getMessage());
         }
         addMouseListener(this);
-        addKeyListener(this);
         addMouseMotionListener(this);
         playButtonX = 606;
+        pressedKeys = new boolean[128];
+        isTitleScreen = true;
+        playingGame = false;
+        miller = new Boss();
+        player = new PlayerMoves();
+
     }
 
 
@@ -69,6 +87,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         //Graphics2D g2 = (Graphics2D) g;
         //g2.setStroke(new BasicStroke(10)); // changes the weight of the line
+
+
     }
 
 
