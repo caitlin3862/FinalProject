@@ -8,6 +8,26 @@ public class Move {
     private BufferedImage move;
     private int x;
     private int y;
+    private BufferedImage arms;
+    private BufferedImage caitlin;
+    private BufferedImage car;
+    private BufferedImage disco;
+    private BufferedImage duo;
+    private BufferedImage gangnam;
+    private BufferedImage gun;
+    private BufferedImage handHip;
+    private BufferedImage hovering;
+    private BufferedImage kick;
+    private BufferedImage kristen;
+    private BufferedImage maracas;
+    private BufferedImage mj;
+    private BufferedImage point;
+    private BufferedImage punch;
+    private BufferedImage slide;
+    private BufferedImage spiderman;
+    private BufferedImage webshooter;
+
+
 
     public Move(BufferedImage img, int x, int y){
         this.x = x;

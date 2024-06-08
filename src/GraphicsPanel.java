@@ -73,17 +73,19 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     public void paintComponent(Graphics g){
         super.paintComponent(g); // add js cuz
         g.drawImage(background,0,0,null);
-        g.drawImage(exitButton, 250, 550,null);
-        g.drawImage(playButton,playButtonX,550,null);
-        g.drawImage(rulesButton, 953, 550,null);
+        if (isTitleScreen) {
+            g.drawImage(exitButton, 250, 550, null);
+            g.drawImage(playButton, playButtonX, 550, null);
+            g.drawImage(rulesButton, 953, 550, null);
 
-        //g.drawImage(bigExitButton, 250,550,null);
-        //g.drawImage(bigPlayButton, 595, 546, null);
-        //g.drawImage(bigRulesbutton, 952, 550,null);
+            //g.drawImage(bigExitButton, 250,550,null);
+            //g.drawImage(bigPlayButton, 595, 546, null);
+            //g.drawImage(bigRulesbutton, 952, 550,null);
 
-        exitRect = new Rectangle(250,550, exitButton.getWidth(), exitButton.getHeight());
-        playRect = new Rectangle(playButtonX,550, exitButton.getWidth(), exitButton.getHeight());
-        rulesRect = new Rectangle(953,550, exitButton.getWidth(), exitButton.getHeight());
+            exitRect = new Rectangle(250, 550, exitButton.getWidth(), exitButton.getHeight());
+            playRect = new Rectangle(playButtonX, 550, exitButton.getWidth(), exitButton.getHeight());
+            rulesRect = new Rectangle(953, 550, exitButton.getWidth(), exitButton.getHeight());
+        }
 
         //Graphics2D g2 = (Graphics2D) g;
         //g2.setStroke(new BasicStroke(10)); // changes the weight of the line
@@ -111,7 +113,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             }
             if (playRect.contains(e.getPoint())){
                 background = danceStage;
-
+                isTitleScreen = false;
+                playingGame = true;
                 repaint();
             }
             if (rulesRect.contains(e.getPoint())){
