@@ -8,7 +8,7 @@ public class Move {
     private BufferedImage move;
     private int x;
     private int y;
-    private BufferedImage[] images = new BufferedImage[19];
+    private BufferedImage[] images = new BufferedImage[17];
 
 
 
