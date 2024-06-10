@@ -106,9 +106,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
-                        x += 40;
+                        x += 60;
                     }
-                    x += 150;
+                    x += 145;
                 }
                 x = 20;
             }
