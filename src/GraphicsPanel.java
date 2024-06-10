@@ -101,8 +101,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } else {
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
-            startMusic();
             int x = 20;
+            while (elapsedTime )
             for (int i = 0; i < currentImages.length;i++){
                 g.drawImage(currentImages[i], x,610,null);
                 x+= 150;
@@ -190,6 +190,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 isTitleScreen = false;
                 playingGame = true;
                 gameTimer.start();
+                startMusic();
                 repaint();
             }
             if (rulesRect.contains(e.getPoint())){
