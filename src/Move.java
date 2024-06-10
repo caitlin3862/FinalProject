@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,13 @@ public class Move {
 
     public BufferedImage[] getImages() {
         return images;
+    }
+
+    public Rectangle moveRect(BufferedImage img){
+        int imageHeight = img.getHeight();
+        int imageWidth = img.getWidth();
+        Rectangle rect = new Rectangle(img.getWidth(), img.getHeight(), imageWidth, imageHeight);
+        return rect;
     }
 
 
