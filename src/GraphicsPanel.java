@@ -101,6 +101,10 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } else {
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
+            if (elapsedTime % 5 == 0) {
+                miller.chooseNextPose();
+            }
+            g.drawImage(miller.getCurrentPose(), 250, 300, null);
             int x = 20;
             if (elapsedTime <= 79) {
                 for (int i = 0; i < currentImages.length; i++) {
@@ -137,7 +141,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 isTitleScreen = true;
                 repaint();
             }
-            miller.chooseNextPose(); // Randomly change the boss's sprite image
+
             repaint();
 
             if(pressedKeys[49]){
