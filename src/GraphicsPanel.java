@@ -75,8 +75,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         firstHalfImages = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
         for (int i = 0; i < 9; i++) {
-            firstHalfImages[i] = move.getImages()[i];
-            secondHalfImages[i] = move.getImages()[i+9];
+            firstHalfImages[i] = move.getMove(i);
+            secondHalfImages[i] = move.getMove(i+9);
         }
         currentImages = firstHalfImages;
         gameTimer = new Timer(1000,this);
@@ -100,10 +100,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } else {
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
-
+            startMusic();
+            int x = 20;
+            for (int i = 0; i < currentImages.length;i++){
+                g.drawImage(currentImages[i], x,610,null);
+                x+= 150;
+            }
+            x = 20;
             if (elapsedTime == 82) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
             }
+
             if (elapsedTime >= 164) { // End the game after the song duration
                 gameTimer.stop();
                 playingGame = false;
