@@ -102,14 +102,20 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
             int x = 20;
-            while (elapsedTime )
-            for (int i = 0; i < currentImages.length;i++){
-                g.drawImage(currentImages[i], x,610,null);
-                x+= 150;
+            if (elapsedTime < 82) {
+                for (int i = 0; i < currentImages.length; i++) {
+                    g.drawImage(currentImages[i], x, 610, null);
+                    x += 150;
+                }
+                x = 20;
             }
-            x = 20;
-            if (elapsedTime == 82) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 82 && elapsedTime < 164) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
+                for (int i = 0; i < currentImages.length; i++) {
+                    g.drawImage(currentImages[i], x, 610, null);
+                    x += 100;
+                }
+                x = 20;
             }
 
             if (elapsedTime >= 164) { // End the game after the song duration
