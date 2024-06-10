@@ -42,8 +42,11 @@ public class Boss {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        this.x = x;
-        this.y = y;
+        currentPose = sprite;
+    }
+
+    public BufferedImage getCurrentPose(){
+        return currentPose;
     }
 
     public void setCurrentPose(BufferedImage i) {

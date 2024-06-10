@@ -59,6 +59,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/bigRules.png"));
 
             danceStage = ImageIO.read(new File("src/danceStage.png"));
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
