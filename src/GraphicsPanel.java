@@ -19,6 +19,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage bigExitButton;
     private BufferedImage rulesButton;
     private BufferedImage bigRulesbutton;
+    private Move move;
 
     private BufferedImage[] currentImages;
     private BufferedImage[] firstHalfImages;
@@ -31,7 +32,6 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private Clip song;
     private Timer gameTimer;
 
-    private Move move;
     private Boss miller;
     private PlayerMoves player;
 
@@ -71,6 +71,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         miller = new Boss();
         player = new PlayerMoves();
         elapsedTime = 0;
+        move = new Move();
         firstHalfImages = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
         for (int i = 0; i < 9; i++) {
@@ -205,6 +206,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     /* ACTION LISTENER METHODS */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer){
