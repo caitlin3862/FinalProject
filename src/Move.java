@@ -44,4 +44,8 @@ public class Move {
         return move;
     }
 
+    public BufferedImage[] getImages() {
+        return images;
+    }
+
 }

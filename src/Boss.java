@@ -46,6 +46,10 @@ public class Boss {
         this.y = y;
     }
 
+    public void setCurrentPose(BufferedImage i) {
+        currentPose = i;
+    }
+
     public Rectangle bossRect(BufferedImage img) {
         int imageHeight = img.getHeight();
         int imageWidth = img.getWidth();

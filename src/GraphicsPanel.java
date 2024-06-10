@@ -8,6 +8,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 public class GraphicsPanel extends JPanel implements MouseListener, ActionListener, MouseMotionListener, KeyListener {
     private BufferedImage background;
     private BufferedImage danceStage;
@@ -17,15 +19,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage bigExitButton;
     private BufferedImage rulesButton;
     private BufferedImage bigRulesbutton;
-    private Move one;
-    private Move two;
-    private Move three;
-    private Move four;
-    private Move five;
-    private Move six;
-    private Move seven;
-    private Move eight;
-    private Move nine;
+    private Move move;
 
     private Boss miller;
     private PlayerMoves player;
@@ -37,6 +31,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private boolean[] pressedKeys;
     private boolean isTitleScreen;
     private boolean playingGame;
+    private ArrayList<Integer> currentCombo;
+    private ArrayList<Integer> playerCombo;
+    private Timer gameTimer;
+    private int elapsedTime;
+    private int score;
+    private BufferedImage[] currentImages;
 
 
 
@@ -62,13 +62,42 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         playingGame = false;
         miller = new Boss();
         player = new PlayerMoves();
-
+        elapsedTime = 0;
+        BufferedImage[] firstHalfImages = new BufferedImage[9];
+        BufferedImage[] secondHalfImages = new BufferedImage[9];
+        for (int i = 0; i < 9; i++) {
+            firstHalfImages[i] = move.getImages()[i];
+            secondHalfImages[i] = move.getImages()[i+9];
+        }
+        currentImages = firstHalfImages;
+        gameTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elapsedTime++;
+                if (elapsedTime == 82) { // Switch to the second set of moves after 82 seconds
+                    currentImages = secondHalfImages;
+                }
+                if (elapsedTime >= 164) { // End the game after the song duration
+                    gameTimer.stop();
+                    playingGame = false;
+                    JOptionPane.showMessageDialog(GraphicsPanel.this, "Game Over! Your score: " + score);
+                    try {
+                        miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
+                    } catch (IOException ex) {
+                        ex.getMessage();
+                    }
+                    isTitleScreen = true;
+                    repaint();
+                }
+                miller.chooseNextPose(); // Randomly change the boss's sprite image
+                repaint();
+            }
     }
 
 
     @Override
     // controls the images on the window
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g); // add js cuz
         g.drawImage(background,0,0,null);
         if (isTitleScreen) {
