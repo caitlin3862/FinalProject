@@ -5,17 +5,17 @@ import java.io.IOException;
 
 
 public class Move {
-    private BufferedImage move;
-    private int x;
-    private int y;
-    private BufferedImage[] images = new BufferedImage[17];
+    //private BufferedImage move;
+    //private int x;
+    //private int y;
+    private BufferedImage[] images;
 
 
 
-    public Move(BufferedImage img, int x, int y){
-        this.x = x;
-        this.y = y;
-        move = img;
+    public Move(){
+        //this.x = x;
+        //this.y = y;
+        images = new BufferedImage[18];
         try {
             images[0] = ImageIO.read(new File("src/studentSprites/arms.png"));
             images[1] = ImageIO.read(new File("src/studentSprites/caitlin.png"));
@@ -40,12 +40,13 @@ public class Move {
         }
     }
 
-    public BufferedImage getMove(){
-        return move;
+    public BufferedImage getMove(int index){
+        return images[index];
     }
 
     public BufferedImage[] getImages() {
         return images;
     }
+
 
 }

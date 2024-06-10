@@ -73,12 +73,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         elapsedTime = 0;
         firstHalfImages = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
-        //for (int i = 0; i < 9; i++) {
-        //    firstHalfImages[i] = move.getImages()[i];
-        //    secondHalfImages[i] = move.getImages()[i+9];
-        //}
+        for (int i = 0; i < 9; i++) {
+            firstHalfImages[i] = move.getImages()[i];
+            secondHalfImages[i] = move.getImages()[i+9];
+        }
         currentImages = firstHalfImages;
-        //gameTimer = new Timer(1000, null);
         gameTimer = new Timer(1000,this);
     }
 
@@ -118,6 +117,34 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             }
             miller.chooseNextPose(); // Randomly change the boss's sprite image
             repaint();
+
+            if(pressedKeys[49]){
+                //player.addToCombo(move);
+            }
+            if(pressedKeys[50]){
+
+            }
+            if(pressedKeys[51]){
+
+            }
+            if(pressedKeys[52]){
+
+            }
+            if(pressedKeys[53]){
+
+            }
+            if(pressedKeys[54]){
+
+            }
+            if(pressedKeys[55]){
+
+            }
+            if(pressedKeys[56]){
+
+            }
+            if(pressedKeys[57]){
+
+            }
 
         }
 
