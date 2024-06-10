@@ -104,7 +104,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             if (elapsedTime % 5 == 0) {
                 miller.chooseNextPose();
             }
-            g.drawImage(miller.getCurrentPose(), 250, 300, null);
+            g.drawImage(miller.getCurrentPose(), 975, 50, null);
             int x = 20;
             if (elapsedTime <= 79) {
                 for (int i = 0; i < currentImages.length; i++) {
