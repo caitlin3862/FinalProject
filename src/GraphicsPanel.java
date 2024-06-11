@@ -137,6 +137,47 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             // playing game screen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
+            if (elapsedTime == 1){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("7", 700,400);
+            }
+            if (elapsedTime == 2){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("6", 700,400);
+            }
+            if (elapsedTime == 3){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("5", 700,400);
+            }
+            if (elapsedTime == 4){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("4", 700,400);
+            }
+            if (elapsedTime == 5){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("3", 700,400);
+            }
+            if (elapsedTime == 6){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("2", 700,400);
+            }
+            if (elapsedTime == 7){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("1", 700,400);
+            }
+            if (elapsedTime == 8){
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setColor(Color.WHITE);
+                g.drawString("DANCE!", 600,400);
+            }
+
 
             g.drawImage(current, 975, 50, null);
 
@@ -145,7 +186,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
-                        x += 60;
+                        x += 70;
                     }
                     x += 145;
                 }
