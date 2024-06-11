@@ -15,6 +15,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage homeScreen;
     private BufferedImage danceStage;
     private BufferedImage rulesScreen;
+    private BufferedImage gameOverScreen;
 
 
     private BufferedImage playButton;
@@ -27,27 +28,21 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage backHomeButton2;
 
     private BufferedImage current;
+    private BufferedImage playerCurrentPose;
     private Move move;
 
     private BufferedImage[] currentImages;
     private BufferedImage[] firstHalfImages;
     private BufferedImage[] secondHalfImages;
+    private BufferedImage[] firstBig;
+    private BufferedImage[] secondBig;
+    private BufferedImage[] currentBig;
 
     private Rectangle exitRect;
     private Rectangle playRect;
     private Rectangle rulesRect;
-    private Rectangle backHomeRect;
+    private Rectangle backHomeRect = new Rectangle(30, 20, 133, 70);
 
-    // sprites rectangles
-    private Rectangle oneRect;
-    private Rectangle twoRect;
-    private Rectangle threeRect;
-    private Rectangle fourRect;
-    private Rectangle fiveRect;
-    private Rectangle sixRect;
-    private Rectangle sevenRect;
-    private Rectangle eightRect;
-    private Rectangle nineRect;
 
     private Clip song;
     private Timer gameTimer;
@@ -59,14 +54,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private boolean[] pressedKeys;
     private boolean isTitleScreen;
     private boolean playingGame;
+    private boolean firstHalf;
 
-    private ArrayList<Integer> currentCombo;
-    private ArrayList<Integer> playerCombo;
+    private ArrayList<Integer> trueCombo;
 
     private int elapsedTime;
     private int millerElapsedTime;
     private int playButtonX;
-    private BufferedImage playerCurrentPose;
+    private int trueComboIdx;
 
 
 
@@ -85,11 +80,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             rulesScreen = ImageIO.read(new File("src/rulesScreenImgs/rulesScreen.png"));
             backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
             backHomeButton2 = ImageIO.read(new File("src/rulesScreenImgs/backHome2.png"));
+            gameOverScreen = ImageIO.read(new File("src/gameOverScreen.png"));
 
             current = ImageIO.read(new File("src/millerSprites/idol.png"));
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            System.out.println("boo");
         }
         background = homeScreen;
 
@@ -98,27 +95,45 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         isTitleScreen = true;
         playingGame = false;
+        firstHalf = true;
 
         miller = new Boss();
         player = new PlayerMoves();
         move = new Move();
 
+
         firstHalfImages = new BufferedImage[9];
+        firstBig = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
+        secondBig = new BufferedImage[9];
+        currentImages = new BufferedImage[9];
+        currentBig = new BufferedImage[9];
+
+        trueCombo = new ArrayList<>();
+
         for (int i = 0; i < 9; i++) {
             firstHalfImages[i] = move.getMove(i);
             secondHalfImages[i] = move.getMove(i+9);
         }
+        for (int i = 0; i < 9; i++) {
+            firstBig[i] = move.getBigMove(i);
+            secondBig[i] = move.getBigMove(i+9);
+        }
+
         currentImages = firstHalfImages;
-        playerCurrentPose = firstHalfImages[1];
+        currentBig = firstBig;
 
         gameTimer = new Timer(1000,this);
-        millerTimer = new Timer(5000, this);
+        millerTimer = new Timer(2000, this);
         elapsedTime = 0;
         millerElapsedTime = 0;
+        trueComboIdx = 0;
 
         addMouseListener(this);
         addMouseMotionListener(this);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
     }
 
 
@@ -126,6 +141,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     // controls the images on the window
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // add js cuz
+
         if (isTitleScreen) {
             // title screen
             g.drawImage(background,0,0,null);
@@ -137,9 +153,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             exitRect = new Rectangle(250, 550, exitButton.getWidth(), exitButton.getHeight());
             playRect = new Rectangle(playButtonX, 550, exitButton.getWidth(), exitButton.getHeight());
             rulesRect = new Rectangle(953, 550, exitButton.getWidth(), exitButton.getHeight());
+
+
+
+
         } else if (playingGame) {
+            generateCombo();
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
+
             // playing game screen
             g.drawImage(background,0,0,null);
+            g.setColor(Color.WHITE);
             g.drawString("Time: " + elapsedTime, 20, 100);
             if (elapsedTime == 1){
                 g.setFont(new Font("Arial", Font.BOLD, 60));
@@ -157,42 +181,72 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 g.drawString("5", 700,400);
             }
             if (elapsedTime == 4){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("4", 700,400);
             }
             if (elapsedTime == 5){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("3", 700,400);
             }
             if (elapsedTime == 6){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("2", 700,400);
             }
             if (elapsedTime == 7){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("1", 700,400);
             }
             if (elapsedTime == 8){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
-                g.drawString("DANCE!", 600,400);
+                g.drawString("DANCE!", 550,400);
             }
 
 
             g.drawImage(current, 975, 50, null);
+            g.drawImage(playerCurrentPose, 200, 50, null);
 
-            if (switchPose()) {
+
+            if(pressedKeys[49]){
+                System.out.println("pressed 1");
+            }
+            if(pressedKeys[50]){
+                System.out.println("pressed 2");
+            }
+            if(pressedKeys[51]){
+                System.out.println("pressed 3");
+            }
+            if(pressedKeys[52]){
+                System.out.println("pressed 4");;
+            }
+            if(pressedKeys[53]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[54]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[55]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[56]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[57]){
+                System.out.println("pressed 9");
+            }
+
+            if (switchPose()){
                 current = miller.getCurrentPose();
             }
 
 
 
             int x = 20;
-            if (elapsedTime <= 30) {
+            if (elapsedTime <= 15) {
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
@@ -201,10 +255,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     x += 145;
                 }
                 x = 20;
+                //keyPresses();
             }
             // Switch to the second set of moves after 82 seconds
-            if (elapsedTime > 30 && elapsedTime < 60) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 15 && elapsedTime < 30) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
+                currentBig = secondBig;
+                firstHalf = false;
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 1 || i == 6){
@@ -213,11 +270,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     x += 140;
                 }
                 x = 20;
+                //keyPresses();
             }
 
 
 
-            if (elapsedTime >= 60) { // End the game after the song duration
+            if (elapsedTime >= 30) { // End the game after the song duration
+                background = gameOverScreen;
+                g.drawImage(backHomeButton, 30,20,null);
+
+                backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
+
                 gameTimer.stop();
                 song.close();
                 playingGame = false;
@@ -226,6 +289,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
                 } catch (IOException ex) {
                     ex.getMessage();
+                    System.out.println("ahh");
                 }
                 //isTitleScreen = true;
                 //background = homeScreen;
@@ -238,45 +302,24 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Score: " + player.getScore(), 20, 50);
 
+            //generateCombo();
+            //g.drawImage(playerCurrentPose, 100,100,null);
+            //int i = 0;
+            //for (int m : currentCombo) {
+            // if (m == playerCombo.get(i)) {
+            //      player.addScore(10);
+            //  }
+            //  i++;
+          // }
 
-//            generateCombo();
-//            g.drawImage(playerCurrentPose, 100,100,null);
-////            int i = 0;
-////            for (int m : currentCombo) {
-////              if (m == playerCombo.get(i)) {
-////                  player.addScore(10);
-////              }
-////              i++;
-////            }
 
+            for (int i = 0; i < player.getPlayerMoves().size(); i++){
+                if (trueCombo.get(i).equals(player.getPlayerMoves().get(i))){
+                    player.addScore(50);
+                    player.clearCombo();
+                }
+            }
 
-            if(pressedKeys[49]){
-                playerCombo.add(0);
-            }
-            if(pressedKeys[50]){
-                playerCombo.add(1);
-            }
-            if(pressedKeys[51]){
-                playerCombo.add(2);
-            }
-            if(pressedKeys[52]){
-                playerCombo.add(3);
-            }
-            if(pressedKeys[53]){
-                playerCombo.add(4);
-            }
-            if(pressedKeys[54]){
-                playerCombo.add(5);
-            }
-            if(pressedKeys[55]){
-                playerCombo.add(6);
-            }
-            if(pressedKeys[56]){
-                playerCombo.add(7);
-            }
-            if(pressedKeys[57]){
-                playerCombo.add(8);
-            }
 
 
 
@@ -357,7 +400,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
-            elapsedTime++;
+            if (e.getSource().equals(gameTimer)){
+                elapsedTime++;
+            }
             millerElapsedTime++;
             if (e.getSource() == millerTimer) {
                 // Change Miller's pose every 5 seconds
@@ -383,6 +428,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 exitButton = ImageIO.read(new File("src/homeScreenImgs/exit.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("adfds");
             }
         }
         if (playRect.contains(e.getPoint())){
@@ -394,6 +440,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 playButtonX = 606;
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("play");
             }
         }
         if (rulesRect.contains(e.getPoint())) {
@@ -403,6 +450,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 rulesButton = ImageIO.read(new File("src/homeScreenImgs/rules.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("rules");
             }
         }
         if (backHomeRect.contains(e.getPoint())){
@@ -412,6 +460,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("home");
             }
         }
 
@@ -425,12 +474,16 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int key = e.getKeyCode();
+        pressedKeys[key] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        int key = e.getKeyCode();
+        pressedKeys[key] = false;
+        player.getPlayerMoves().add(0);
+        setPlayerCurrentPose();
     }
 
     /* PRIVATE HELPER METHODS */
@@ -447,35 +500,51 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     private boolean switchPose(){
-        if (millerElapsedTime % 3 == 0 && millerElapsedTime > 8){
+        if (millerElapsedTime % 2 == 0 && millerElapsedTime > 8){
             return true;
         } else {
             return false;
         }
     }
 
-    private void generateCombo() {
-        for (int i = 0; i < 6; i++) {
-            int rand = (int) (Math.random() * 9);
-            currentCombo.add(rand);
-            setPlayerCurrentPose(currentImages[rand]);
-        }
-    }
-
-    private void handlePlayerInput() {
-        int i = 0;
-        for (int p : currentCombo) {
-            if (playerCombo.size() > i && playerCombo.get(i) == p) {
-                player.addScore(10);
+    private void generateCombo(){
+        for (int i = 0; i < 5; i++) {
+            int rand = (int) (Math.random() * currentImages.length);
+            if (rand == 0) {
+                trueCombo.add(0);
+            } else if (rand == 1) {
+                trueCombo.add(1);
+            } else if (rand == 2) {
+                trueCombo.add(2);
+            } else if (rand == 3) {
+                trueCombo.add(3);
+            } else if (rand == 4) {
+                trueCombo.add(4);
+            } else if (rand == 5) {
+                trueCombo.add(5);
+            } else if (rand == 6) {
+                trueCombo.add(6);
+            } else if (rand == 7) {
+                trueCombo.add(7);
+            } else {
+                trueCombo.add(8);
             }
-            i++;
+        }
+    }
+
+    private void setPlayerCurrentPose() {
+        if (trueComboIdx + 1 < 9) {
+            trueComboIdx++;
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
+            repaint();
+        } else {
+            trueComboIdx = 0;
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
+            repaint();
         }
     }
 
 
-    private void setPlayerCurrentPose(BufferedImage pose) {
-        playerCurrentPose = pose;
-    }
 
 
 }

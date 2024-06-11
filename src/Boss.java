@@ -41,6 +41,7 @@ public class Boss {
             poses[11] = ImageIO.read(new File("src/millerSprites/superman.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            System.out.println("boss");
         }
         currentPose = sprite;
     }
@@ -61,7 +62,7 @@ public class Boss {
     }
 
     public void chooseNextPose() {
-        int pose = (int) (Math.random() * poses.length);
+        int pose = (int) (Math.random() * 10) + 2;
         currentPose = poses[pose];
     }
 
