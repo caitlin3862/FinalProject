@@ -184,8 +184,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             // playing game screen
             g.drawImage(background,0,0,null);
             g.setColor(Color.GREEN);
-            g.drawString("Time: " + elapsedTime, 20, 100);
-            g.drawString("Time: " + comboElapsedTime, 20, 120);
+            //g.drawString("Time: " + elapsedTime, 20, 100);
+            //g.drawString("Time: " + comboElapsedTime, 20, 120);
             g.setFont(new Font("Arial", Font.BOLD, 70));
             g.setColor(Color.GREEN);
             g.drawString("Combo: " + comboStreak, 550, 140);
