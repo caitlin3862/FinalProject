@@ -23,6 +23,9 @@ public class PlayerMoves {
         moves.add(m);
     }
 
+    public void clearCombo() { moves = new ArrayList<>(); }
+
+
     public Rectangle spriteRect(BufferedImage img) {
         int imageHeight = img.getHeight();
         int imageWidth = img.getWidth();

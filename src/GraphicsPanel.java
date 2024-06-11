@@ -188,31 +188,31 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.drawString("Score: " + player.getScore(), 10, 30);
 
             if(pressedKeys[49]){
-
+                player.addToCombo(currentImages[0]);
             }
             if(pressedKeys[50]){
-
+                player.addToCombo(currentImages[1]);
             }
             if(pressedKeys[51]){
-
+                player.addToCombo(currentImages[2]);
             }
             if(pressedKeys[52]){
-
+                player.addToCombo(currentImages[3]);
             }
             if(pressedKeys[53]){
-
+                player.addToCombo(currentImages[4]);
             }
             if(pressedKeys[54]){
-
+                player.addToCombo(currentImages[5]);
             }
             if(pressedKeys[55]){
-
+                player.addToCombo(currentImages[6]);
             }
             if(pressedKeys[56]){
-
+                player.addToCombo(currentImages[7]);
             }
             if(pressedKeys[57]){
-
+                player.addToCombo(currentImages[8]);
             }
 
         } else {
