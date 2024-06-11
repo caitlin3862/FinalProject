@@ -84,6 +84,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
             backHomeButton2 = ImageIO.read(new File("src/rulesScreenImgs/backHome2.png"));
 
+            current = ImageIO.read(new File("src/millerSprites/idol.png"));
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -135,15 +137,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             // playing game screen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
-            try {
-                miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/idol.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
             g.drawImage(current, 975, 50, null);
 
             int x = 20;
-            if (elapsedTime <= 79) {
+            if (elapsedTime <= 30) {
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
@@ -154,7 +152,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 x = 20;
             }
             // Switch to the second set of moves after 82 seconds
-            if (elapsedTime > 79 && elapsedTime < 164) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 30 && elapsedTime < 60) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
@@ -168,8 +166,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
 
-            if (elapsedTime >= 164) { // End the game after the song duration
+            if (elapsedTime >= 60) { // End the game after the song duration
                 gameTimer.stop();
+                song.close();
                 playingGame = false;
                 //JOptionPane.showMessageDialog(GraphicsPanel.this, "Game Over! Your score: " + player.getScore());
                 try {
@@ -178,14 +177,15 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     ex.getMessage();
                 }
                 isTitleScreen = true;
+                background = homeScreen;
                 repaint();
             }
 
             repaint();
 
-            g.setFont(new Font("Arial", Font.BOLD, 24));
+            g.setFont(new Font("Arial", Font.BOLD, 32));
             g.setColor(Color.WHITE);
-            g.drawString("Score: " + player.getScore(), 10, 30);
+            g.drawString("Score: " + player.getScore(), 20, 50);
 
             if(pressedKeys[49]){
                 player.addToCombo(currentImages[0]);
@@ -379,6 +379,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             System.out.println(e.getMessage());
         }
     }
+
 
 
 }
