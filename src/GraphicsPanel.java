@@ -258,12 +258,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     current = miller.getCurrentPose();
                 }
                 if (switchPlayerPose()) {
-                    setPlayerCurrentPose();
-                    if (!hitInTime){
+                    if (!hitInTime || !hitAlready) {
                         comboStreak = 0;
                     }
-                    hitAlready = false;
+                    System.out.println("SwitchPlayerPose: hitInTime: " + hitInTime + " comboStreak: " + comboStreak);
                     comboElapsedTime = 0;
+                    setPlayerCurrentPose();
                 }
             }
 
@@ -524,10 +524,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             comboStreak++;
             hitAlready = true;
             hitInTime = true;
-        } else {
-            hitInTime = false;
         }
-        //setPlayerCurrentPose();
+        System.out.println("KeyReleased: comboElapsedTime: " + comboElapsedTime + " hitInTime: " + hitInTime + " comboStreak: " + comboStreak);
     }
 
     /* PRIVATE HELPER METHODS */
@@ -551,12 +549,10 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         }
     }
 
-    private boolean switchPlayerPose(){
-        if (comboElapsedTime > 3){
-            return true;
-        } else {
-            return false;
-        }
+    private boolean switchPlayerPose() {
+        boolean result = (comboElapsedTime % 2 == 0 &&  comboElapsedTime > 10);
+        System.out.println("switchPlayerPose: " + result + " comboElapsedTime: " + comboElapsedTime);
+        return result;
     }
 
     private void generateCombo(){
