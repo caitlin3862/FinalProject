@@ -61,7 +61,7 @@ public class Boss {
     }
 
     public void chooseNextPose() {
-        int pose = (int) (Math.random() * poses.length);
+        int pose = (int) (Math.random() * 10) + 2;
         currentPose = poses[pose];
     }
 

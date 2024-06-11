@@ -15,6 +15,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage homeScreen;
     private BufferedImage danceStage;
     private BufferedImage rulesScreen;
+    private BufferedImage gameOverScreen;
 
 
     private BufferedImage playButton;
@@ -85,6 +86,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             rulesScreen = ImageIO.read(new File("src/rulesScreenImgs/rulesScreen.png"));
             backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
             backHomeButton2 = ImageIO.read(new File("src/rulesScreenImgs/backHome2.png"));
+            gameOverScreen = ImageIO.read(new File("src/gameOverScreen.png"));
 
             current = ImageIO.read(new File("src/millerSprites/idol.png"));
 
@@ -190,7 +192,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             }
 
             int x = 20;
-            if (elapsedTime <= 30) {
+            if (elapsedTime <= 15) {
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
@@ -201,7 +203,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 x = 20;
             }
             // Switch to the second set of moves after 82 seconds
-            if (elapsedTime > 30 && elapsedTime < 60) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 15 && elapsedTime < 30) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
@@ -215,7 +217,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
 
-            if (elapsedTime >= 60) { // End the game after the song duration
+            if (elapsedTime >= 30) { // End the game after the song duration
+                background = gameOverScreen;
+                g.drawImage(backHomeButton, 30,20,null);
+
+                backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
+
                 gameTimer.stop();
                 song.close();
                 playingGame = false;
