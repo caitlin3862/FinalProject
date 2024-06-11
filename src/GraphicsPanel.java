@@ -65,6 +65,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     private int elapsedTime;
     private int playButtonX;
+    private BufferedImage playerCurrentPose;
 
 
 
@@ -108,6 +109,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             secondHalfImages[i] = move.getMove(i+9);
         }
         currentImages = firstHalfImages;
+        playerCurrentPose = firstHalfImages[1];
 
         gameTimer = new Timer(1000,this);
         millerTimer = new Timer(5000, this);
@@ -133,7 +135,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             exitRect = new Rectangle(250, 550, exitButton.getWidth(), exitButton.getHeight());
             playRect = new Rectangle(playButtonX, 550, exitButton.getWidth(), exitButton.getHeight());
             rulesRect = new Rectangle(953, 550, exitButton.getWidth(), exitButton.getHeight());
-        } else if (playingGame){
+        } else if (playingGame) {
             // playing game screen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
@@ -228,32 +230,43 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Score: " + player.getScore(), 20, 50);
 
+//            generateCombo();
+//            g.drawImage(playerCurrentPose, 100,100,null);
+////            int i = 0;
+////            for (int m : currentCombo) {
+////              if (m == playerCombo.get(i)) {
+////                  player.addScore(10);
+////              }
+////              i++;
+////            }
+
+
             if(pressedKeys[49]){
-                player.addToCombo(currentImages[0]);
+                playerCombo.add(0);
             }
             if(pressedKeys[50]){
-                player.addToCombo(currentImages[1]);
+                playerCombo.add(1);
             }
             if(pressedKeys[51]){
-                player.addToCombo(currentImages[2]);
+                playerCombo.add(2);
             }
             if(pressedKeys[52]){
-                player.addToCombo(currentImages[3]);
+                playerCombo.add(3);
             }
             if(pressedKeys[53]){
-                player.addToCombo(currentImages[4]);
+                playerCombo.add(4);
             }
             if(pressedKeys[54]){
-                player.addToCombo(currentImages[5]);
+                playerCombo.add(5);
             }
             if(pressedKeys[55]){
-                player.addToCombo(currentImages[6]);
+                playerCombo.add(6);
             }
             if(pressedKeys[56]){
-                player.addToCombo(currentImages[7]);
+                playerCombo.add(7);
             }
             if(pressedKeys[57]){
-                player.addToCombo(currentImages[8]);
+                playerCombo.add(8);
             }
 
         } else {
@@ -331,16 +344,15 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     /* ACTION LISTENER METHODS */
 
    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof Timer) {
-            elapsedTime++;
-            if (e.getSource() == millerTimer) {
-                // Change Miller's pose every 5 seconds
-                miller.chooseNextPose();
-                repaint();
-            }
-        }
-    }
+   public void actionPerformed(ActionEvent e) {
+       if (e.getSource() == gameTimer) {
+           elapsedTime++;
+           repaint();
+       } else if (e.getSource() == millerTimer) {
+           miller.chooseNextPose();
+           repaint();
+       }
+   }
 
     /* MOUSE MOTION LISTENER METHODS */
     @Override
@@ -419,6 +431,18 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void generateCombo() {
+        for (int i = 0; i < 6; i++) {
+            int rand = (int) (Math.random() * 8);
+            currentCombo.add(rand);
+            setPlayerCurrentPose(currentImages[rand]);
+        }
+    }
+
+    private void setPlayerCurrentPose(BufferedImage pose) {
+        playerCurrentPose = pose;
     }
 
 
