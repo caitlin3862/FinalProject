@@ -64,6 +64,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private ArrayList<Integer> playerCombo;
 
     private int elapsedTime;
+    private int millerElapsedTime;
     private int playButtonX;
 
 
@@ -112,6 +113,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         gameTimer = new Timer(1000,this);
         millerTimer = new Timer(5000, this);
         elapsedTime = 0;
+        millerElapsedTime = 0;
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -138,48 +140,52 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
             if (elapsedTime == 1){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("7", 700,400);
             }
             if (elapsedTime == 2){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("6", 700,400);
             }
             if (elapsedTime == 3){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("5", 700,400);
             }
             if (elapsedTime == 4){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("4", 700,400);
             }
             if (elapsedTime == 5){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("3", 700,400);
             }
             if (elapsedTime == 6){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("2", 700,400);
             }
             if (elapsedTime == 7){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("1", 700,400);
             }
             if (elapsedTime == 8){
-                g.setFont(new Font("Arial", Font.BOLD, 40));
+                g.setFont(new Font("Arial", Font.BOLD, 60));
                 g.setColor(Color.WHITE);
                 g.drawString("DANCE!", 600,400);
             }
 
 
             g.drawImage(current, 975, 50, null);
+
+            if (switchPose()){
+                current = miller.getCurrentPose();
+            }
 
             int x = 20;
             if (elapsedTime <= 30) {
@@ -217,8 +223,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 } catch (IOException ex) {
                     ex.getMessage();
                 }
-                isTitleScreen = true;
-                background = homeScreen;
+                //isTitleScreen = true;
+                //background = homeScreen;
                 repaint();
             }
 
@@ -334,6 +340,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             elapsedTime++;
+            millerElapsedTime++;
             if (e.getSource() == millerTimer) {
                 // Change Miller's pose every 5 seconds
                 miller.chooseNextPose();
@@ -418,6 +425,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             song.start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private boolean switchPose(){
+        if (millerElapsedTime % 3 == 0 && millerElapsedTime > 8){
+            return true;
+        } else {
+            return false;
         }
     }
 
