@@ -148,6 +148,10 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
             repaint();
 
+            g.setFont(new Font("Arial", Font.BOLD, 24));
+            g.setColor(Color.WHITE);
+            g.drawString("Score: " + player.getScore(), 10, 30);
+
             if(pressedKeys[49]){
                 //player.addToCombo(move);
             }
