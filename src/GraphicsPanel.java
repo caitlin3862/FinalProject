@@ -12,13 +12,21 @@ import java.util.ArrayList;
 
 public class GraphicsPanel extends JPanel implements MouseListener, ActionListener, MouseMotionListener, KeyListener {
     private BufferedImage background;
+    private BufferedImage homeScreen;
     private BufferedImage danceStage;
+    private BufferedImage rulesScreen;
+
+
     private BufferedImage playButton;
     private BufferedImage bigPlayButton;
     private BufferedImage exitButton;
     private BufferedImage bigExitButton;
     private BufferedImage rulesButton;
     private BufferedImage bigRulesbutton;
+    private BufferedImage backHomeButton;
+    private BufferedImage backHomeButton2;
+
+    private BufferedImage current;
     private Move move;
 
     private BufferedImage[] currentImages;
@@ -28,6 +36,18 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private Rectangle exitRect;
     private Rectangle playRect;
     private Rectangle rulesRect;
+    private Rectangle backHomeRect;
+
+    // sprites rectangles
+    private Rectangle oneRect;
+    private Rectangle twoRect;
+    private Rectangle threeRect;
+    private Rectangle fourRect;
+    private Rectangle fiveRect;
+    private Rectangle sixRect;
+    private Rectangle sevenRect;
+    private Rectangle eightRect;
+    private Rectangle nineRect;
 
     private Clip song;
     private Timer gameTimer;
@@ -51,7 +71,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     public GraphicsPanel(){
         try {
-            background = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
+            homeScreen = ImageIO.read(new File("src/homeScreenImgs/homeScreen.png"));
             playButton = ImageIO.read(new File("src/homeScreenImgs/play.png"));
             bigPlayButton = ImageIO.read(new File("src/homeScreenImgs/bigPlay.png"));
             exitButton = ImageIO.read(new File("src/homeScreenImgs/exit.png"));
@@ -60,21 +80,25 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             bigRulesbutton = ImageIO.read(new File("src/homeScreenImgs/bigRules.png"));
 
             danceStage = ImageIO.read(new File("src/danceStage.png"));
+            rulesScreen = ImageIO.read(new File("src/rulesScreenImgs/rulesScreen.png"));
+            backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
+            backHomeButton2 = ImageIO.read(new File("src/rulesScreenImgs/backHome2.png"));
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        background = homeScreen;
+
         playButtonX = 606;
         pressedKeys = new boolean[128];
+
         isTitleScreen = true;
         playingGame = false;
+
         miller = new Boss();
         player = new PlayerMoves();
-        millerTimer = new Timer(5000, this);
-        elapsedTime = 0;
         move = new Move();
+
         firstHalfImages = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
         for (int i = 0; i < 9; i++) {
@@ -82,7 +106,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             secondHalfImages[i] = move.getMove(i+9);
         }
         currentImages = firstHalfImages;
+
         gameTimer = new Timer(1000,this);
+        millerTimer = new Timer(5000, this);
+        elapsedTime = 0;
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
 
@@ -91,6 +121,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // add js cuz
         if (isTitleScreen) {
+            // title screen
             g.drawImage(background,0,0,null);
             g.drawImage(exitButton, 250, 550, null);
             g.drawImage(playButton, playButtonX, 550, null);
@@ -100,7 +131,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             exitRect = new Rectangle(250, 550, exitButton.getWidth(), exitButton.getHeight());
             playRect = new Rectangle(playButtonX, 550, exitButton.getWidth(), exitButton.getHeight());
             rulesRect = new Rectangle(953, 550, exitButton.getWidth(), exitButton.getHeight());
-        } else {
+        } else if (playingGame){
+            // playing game screen
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
             try {
@@ -108,7 +140,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            g.drawImage(miller.getCurrentPose(), 975, 50, null);
+            g.drawImage(current, 975, 50, null);
+
             int x = 20;
             if (elapsedTime <= 79) {
                 for (int i = 0; i < currentImages.length; i++) {
@@ -133,6 +166,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 x = 20;
             }
 
+
+
             if (elapsedTime >= 164) { // End the game after the song duration
                 gameTimer.stop();
                 playingGame = false;
@@ -153,7 +188,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.drawString("Score: " + player.getScore(), 10, 30);
 
             if(pressedKeys[49]){
-                //player.addToCombo(move);
+
             }
             if(pressedKeys[50]){
 
@@ -180,6 +215,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
             }
 
+        } else {
+            // rules screen
+            g.drawImage(background,0,0,null);
+            g.drawImage(backHomeButton, 30,20,null);
+
+            backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
         }
 
 
@@ -220,9 +261,15 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 repaint();
             }
             if (rulesRect.contains(e.getPoint())){
-                //background = img;
+                background = rulesScreen;
+                isTitleScreen = false;
                 repaint();
                 //somehow remove the buttons and then replace them after you exit the rules page
+            }
+            if (backHomeRect.contains(e.getPoint())){
+                background = homeScreen;
+                isTitleScreen = true;
+                repaint();
             }
         }
     }
@@ -246,12 +293,10 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             elapsedTime++;
-            if (playingGame) {
-                if (e.getSource() == millerTimer) {
-                    // Change Miller's pose every 5 seconds
-                    miller.chooseNextPose();
-                    repaint();
-                }
+            if (e.getSource() == millerTimer) {
+                // Change Miller's pose every 5 seconds
+                miller.chooseNextPose();
+                repaint();
             }
         }
     }
@@ -294,6 +339,16 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 System.out.println(exception.getMessage());
             }
         }
+        if (backHomeRect.contains(e.getPoint())){
+            backHomeButton = backHomeButton2;
+        } else {
+            try {
+                backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
+            } catch (IOException exception){
+                System.out.println(exception.getMessage());
+            }
+        }
+
     }
 
     /* KEY LISTENER METHODS */

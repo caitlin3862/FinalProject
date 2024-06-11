@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PlayerMoves {
-    private ArrayList<Move> moves;
+    private ArrayList<BufferedImage> moves;
     private int score;
 
     public PlayerMoves() {
@@ -11,7 +11,7 @@ public class PlayerMoves {
         moves = new ArrayList<>();
     }
 
-    public ArrayList<Move> getPlayerMoves(){
+    public ArrayList<BufferedImage> getPlayerMoves(){
         return moves;
     }
 
@@ -19,7 +19,7 @@ public class PlayerMoves {
         return score;
     }
 
-    public void addToCombo(Move m){
+    public void addToCombo(BufferedImage m){
         moves.add(m);
     }
 
