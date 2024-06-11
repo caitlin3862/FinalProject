@@ -185,9 +185,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
             g.drawImage(current, 975, 50, null);
 
-            if (switchPose()){
+            if (switchPose()) {
                 current = miller.getCurrentPose();
             }
+
+
 
             int x = 20;
             if (elapsedTime <= 30) {
@@ -236,6 +238,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Score: " + player.getScore(), 20, 50);
 
+
 //            generateCombo();
 //            g.drawImage(playerCurrentPose, 100,100,null);
 ////            int i = 0;
@@ -274,6 +277,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             if(pressedKeys[57]){
                 playerCombo.add(8);
             }
+
+
 
         } else {
             // rules screen
@@ -451,11 +456,22 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     private void generateCombo() {
         for (int i = 0; i < 6; i++) {
-            int rand = (int) (Math.random() * 8);
+            int rand = (int) (Math.random() * 9);
             currentCombo.add(rand);
             setPlayerCurrentPose(currentImages[rand]);
         }
     }
+
+    private void handlePlayerInput() {
+        int i = 0;
+        for (int p : currentCombo) {
+            if (playerCombo.size() > i && playerCombo.get(i) == p) {
+                player.addScore(10);
+            }
+            i++;
+        }
+    }
+
 
     private void setPlayerCurrentPose(BufferedImage pose) {
         playerCurrentPose = pose;
