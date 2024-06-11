@@ -28,27 +28,21 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private BufferedImage backHomeButton2;
 
     private BufferedImage current;
+    private BufferedImage playerCurrentPose;
     private Move move;
 
     private BufferedImage[] currentImages;
     private BufferedImage[] firstHalfImages;
     private BufferedImage[] secondHalfImages;
+    private BufferedImage[] firstBig;
+    private BufferedImage[] secondBig;
+    private BufferedImage[] currentBig;
 
     private Rectangle exitRect;
     private Rectangle playRect;
     private Rectangle rulesRect;
     private Rectangle backHomeRect;
 
-    // sprites rectangles
-    private Rectangle oneRect;
-    private Rectangle twoRect;
-    private Rectangle threeRect;
-    private Rectangle fourRect;
-    private Rectangle fiveRect;
-    private Rectangle sixRect;
-    private Rectangle sevenRect;
-    private Rectangle eightRect;
-    private Rectangle nineRect;
 
     private Clip song;
     private Timer gameTimer;
@@ -60,14 +54,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private boolean[] pressedKeys;
     private boolean isTitleScreen;
     private boolean playingGame;
+    private boolean firstHalf;
 
-    private ArrayList<Integer> currentCombo;
-    private ArrayList<Integer> playerCombo;
+    private ArrayList<Integer> trueCombo;
 
     private int elapsedTime;
     private int millerElapsedTime;
     private int playButtonX;
-    private BufferedImage playerCurrentPose;
 
 
 
@@ -100,19 +93,33 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         isTitleScreen = true;
         playingGame = false;
+        firstHalf = true;
 
         miller = new Boss();
         player = new PlayerMoves();
         move = new Move();
 
+
         firstHalfImages = new BufferedImage[9];
+        firstBig = new BufferedImage[9];
         secondHalfImages = new BufferedImage[9];
+        secondBig = new BufferedImage[9];
+        currentImages = new BufferedImage[9];
+        currentBig = new BufferedImage[9];
+
+        trueCombo = new ArrayList<>();
+
         for (int i = 0; i < 9; i++) {
             firstHalfImages[i] = move.getMove(i);
             secondHalfImages[i] = move.getMove(i+9);
         }
+        for (int i = 0; i < 9; i++) {
+            firstBig[i] = move.getBigMove(i);
+            secondBig[i] = move.getBigMove(i+9);
+        }
+
         currentImages = firstHalfImages;
-        playerCurrentPose = firstHalfImages[1];
+        currentBig = firstBig;
 
         gameTimer = new Timer(1000,this);
         millerTimer = new Timer(5000, this);
@@ -128,6 +135,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     // controls the images on the window
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // add js cuz
+
         if (isTitleScreen) {
             // title screen
             g.drawImage(background,0,0,null);
@@ -139,9 +147,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             exitRect = new Rectangle(250, 550, exitButton.getWidth(), exitButton.getHeight());
             playRect = new Rectangle(playButtonX, 550, exitButton.getWidth(), exitButton.getHeight());
             rulesRect = new Rectangle(953, 550, exitButton.getWidth(), exitButton.getHeight());
+
+
+
+
         } else if (playingGame) {
+            generateCombo();
+            playerCurrentPose = currentBig[trueCombo.get(0)];
+
             // playing game screen
             g.drawImage(background,0,0,null);
+            g.setColor(Color.WHITE);
             g.drawString("Time: " + elapsedTime, 20, 100);
             if (elapsedTime == 1){
                 g.setFont(new Font("Arial", Font.BOLD, 60));
@@ -186,10 +202,13 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
             g.drawImage(current, 975, 50, null);
+            g.drawImage(playerCurrentPose, 200, 50, null);
 
             if (switchPose()){
                 current = miller.getCurrentPose();
             }
+
+
 
             int x = 20;
             if (elapsedTime <= 15) {
@@ -205,6 +224,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             // Switch to the second set of moves after 82 seconds
             if (elapsedTime > 15 && elapsedTime < 30) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
+                firstHalf = false;
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 1 || i == 6){
@@ -243,44 +263,48 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Score: " + player.getScore(), 20, 50);
 
-//            generateCombo();
-//            g.drawImage(playerCurrentPose, 100,100,null);
-////            int i = 0;
-////            for (int m : currentCombo) {
-////              if (m == playerCombo.get(i)) {
-////                  player.addScore(10);
-////              }
-////              i++;
-////            }
+            //generateCombo();
+            //g.drawImage(playerCurrentPose, 100,100,null);
+            //int i = 0;
+            //for (int m : currentCombo) {
+            // if (m == playerCombo.get(i)) {
+            //      player.addScore(10);
+            //  }
+            //  i++;
+          // }
 
 
             if(pressedKeys[49]){
-                playerCombo.add(0);
+                player.getPlayerMoves().add(0);
             }
             if(pressedKeys[50]){
-                playerCombo.add(1);
+                player.getPlayerMoves().add(1);
             }
             if(pressedKeys[51]){
-                playerCombo.add(2);
+                player.getPlayerMoves().add(2);
             }
             if(pressedKeys[52]){
-                playerCombo.add(3);
+                player.getPlayerMoves().add(3);
             }
             if(pressedKeys[53]){
-                playerCombo.add(4);
+                player.getPlayerMoves().add(4);
             }
             if(pressedKeys[54]){
-                playerCombo.add(5);
+                player.getPlayerMoves().add(5);
             }
             if(pressedKeys[55]){
-                playerCombo.add(6);
+                player.getPlayerMoves().add(6);
             }
             if(pressedKeys[56]){
-                playerCombo.add(7);
+                player.getPlayerMoves().add(7);
             }
             if(pressedKeys[57]){
-                playerCombo.add(8);
+                player.getPlayerMoves().add(8);
             }
+
+
+
+
 
         } else {
             // rules screen
@@ -456,17 +480,35 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         }
     }
 
-    private void generateCombo() {
-        for (int i = 0; i < 6; i++) {
-            int rand = (int) (Math.random() * 8);
-            currentCombo.add(rand);
-            setPlayerCurrentPose(currentImages[rand]);
+    private void generateCombo(){
+        for (int i = 0; i < 5; i++) {
+            int rand = (int) (Math.random() * currentImages.length);
+            if (rand == 0) {
+                trueCombo.add(0);
+            } else if (rand == 1) {
+                trueCombo.add(1);
+            } else if (rand == 2) {
+                trueCombo.add(2);
+            } else if (rand == 3) {
+                trueCombo.add(3);
+            } else if (rand == 4) {
+                trueCombo.add(4);
+            } else if (rand == 5) {
+                trueCombo.add(5);
+            } else if (rand == 6) {
+                trueCombo.add(6);
+            } else if (rand == 7) {
+                trueCombo.add(7);
+            } else {
+                trueCombo.add(8);
+            }
         }
     }
 
     private void setPlayerCurrentPose(BufferedImage pose) {
-        playerCurrentPose = pose;
+        playerCurrentPose = move.pickRandPose(currentImages, firstHalf);
     }
+
 
 
 }
