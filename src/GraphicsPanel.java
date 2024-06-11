@@ -55,6 +55,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private boolean isTitleScreen;
     private boolean playingGame;
     private boolean firstHalf;
+    private int correctCount;
+    private int incorrectCount;
 
     private ArrayList<Integer> trueCombo;
 
@@ -124,7 +126,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         currentBig = firstBig;
 
         gameTimer = new Timer(1000,this);
-        millerTimer = new Timer(2000, this);
+        millerTimer = new Timer(1000, this);
         elapsedTime = 0;
         millerElapsedTime = 0;
         trueComboIdx = 0;
@@ -246,7 +248,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
             int x = 20;
-            if (elapsedTime <= 15) {
+            if (elapsedTime <= 79) {
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
@@ -258,7 +260,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 //keyPresses();
             }
             // Switch to the second set of moves after 82 seconds
-            if (elapsedTime > 15 && elapsedTime < 30) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 79 && elapsedTime < 164) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
                 currentBig = secondBig;
                 firstHalf = false;
@@ -275,7 +277,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
 
-            if (elapsedTime >= 30) { // End the game after the song duration
+            if (elapsedTime >= 164) { // End the game after the song duration
                 background = gameOverScreen;
                 g.drawImage(backHomeButton, 30,20,null);
 
@@ -316,7 +318,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             for (int i = 0; i < player.getPlayerMoves().size(); i++){
                 if (trueCombo.get(i).equals(player.getPlayerMoves().get(i))){
                     player.addScore(50);
+                    correctCount++;
                     player.clearCombo();
+                } else {
+                    player.addScore(-50);
+                    incorrectCount++;
                 }
             }
 
