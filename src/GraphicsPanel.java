@@ -166,32 +166,32 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Time: " + elapsedTime, 20, 100);
             if (elapsedTime == 1){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("7", 700,400);
             }
             if (elapsedTime == 2){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("6", 700,400);
             }
             if (elapsedTime == 3){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("5", 700,400);
             }
             if (elapsedTime == 4){
-                g.setFont(new Font("Arial", Font.BOLD, 70));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("4", 700,400);
             }
             if (elapsedTime == 5){
-                g.setFont(new Font("Arial", Font.BOLD, 70));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("3", 700,400);
             }
             if (elapsedTime == 6){
-                g.setFont(new Font("Arial", Font.BOLD, 70));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("2", 700,400);
             }
@@ -500,7 +500,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     private boolean switchPose(){
-        if (millerElapsedTime % 2 == 0 && millerElapsedTime > 8){
+        if (millerElapsedTime % 2 == 0 && millerElapsedTime > 10){
             return true;
         } else {
             return false;
