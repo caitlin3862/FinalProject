@@ -132,6 +132,10 @@ public class Move {
         return rect;
     }
 
+    public void chooseNextPose() {
+        int pose = (int) (Math.random() * 10) + 2;
+        currentPose = bigImages[pose];
+    }
 
 
 

@@ -282,17 +282,19 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 g.drawImage(backHomeButton, 30,20,null);
 
                 backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
-
-                gameTimer.stop();
-                song.close();
-                playingGame = false;
-                //JOptionPane.showMessageDialog(GraphicsPanel.this, "Game Over! Your score: " + player.getScore());
                 try {
                     miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
                 } catch (IOException ex) {
                     ex.getMessage();
                     System.out.println("ahh");
                 }
+                g.drawString("Final Score: " + player.getScore(), 20, 50);
+                g.drawString("Number of correct moves:  " + correctCount, 20, 100);
+                g.drawString("Number of incorrect moves: " + incorrectCount, 20, 150);
+                gameTimer.stop();
+                song.close();
+                playingGame = false;
+                //JOptionPane.showMessageDialog(GraphicsPanel.this, "Game Over! Your score: " + player.getScore());
                 //isTitleScreen = true;
                 //background = homeScreen;
                 repaint();
@@ -321,7 +323,6 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     correctCount++;
                     player.clearCombo();
                 } else {
-                    player.addScore(-50);
                     incorrectCount++;
                 }
             }
