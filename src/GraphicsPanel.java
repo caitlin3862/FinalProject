@@ -69,6 +69,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private int correctCount;
     private int incorrectCount;
     private int comboStreak;
+    private double speed;
+    private double speedControl;
 
 
 
@@ -140,6 +142,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         millerElapsedTime = 0;
         trueComboIdx = 0;
         comboStreak = 0;
+        speed = 3.0;
+        speedControl = 2.0;
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -178,7 +182,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.setColor(Color.WHITE);
             g.drawString("Time: " + elapsedTime, 20, 100);
             g.drawString("Time: " + comboElapsedTime, 20, 120);
-            g.drawString("Combo: " + comboStreak, 20, 140);
+            g.setFont(new Font("Arial", Font.BOLD, 70));
+            g.setColor(Color.WHITE);
+            g.drawString("Combo: " + comboStreak, 550, 140);
             if (elapsedTime == 1){
                 g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
@@ -210,12 +216,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 g.drawString("2", 700,400);
             }
             if (elapsedTime == 7){
-                g.setFont(new Font("Arial", Font.BOLD, 70));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("1", 700,400);
             }
             if (elapsedTime == 8){
-                g.setFont(new Font("Arial", Font.BOLD, 70));
+                g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
                 g.drawString("DANCE!", 550,400);
             }
@@ -253,6 +259,15 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 System.out.println("pressed 9");
             }
 
+            if (comboStreak == 5){
+                g.setFont(new Font("Arial", Font.BOLD, 90));
+                g.setColor(Color.WHITE);
+                g.drawString("Faster!",550,400);
+                speed-= 0.5;
+                speedControl += 0.25;
+                comboStreak++;
+            }
+
             if(elapsedTime >= 9) {
                 if (switchPose()) {
                     current = miller.getCurrentPose();
@@ -273,7 +288,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
             int x = 20;
-            if (elapsedTime <= 79) {
+            if (elapsedTime <= 10) {
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
                     if (i == 2){
@@ -285,7 +300,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 //keyPresses();
             }
             // Switch to the second set of moves after 82 seconds
-            if (elapsedTime > 79 && elapsedTime < 164) { // Switch to the second set of moves after 82 seconds
+            if (elapsedTime > 10 && elapsedTime < 20) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
                 currentBig = secondBig;
                 firstHalf = false;
@@ -302,20 +317,27 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
 
-            if (elapsedTime >= 164) { // End the game after the song duration
+            if (elapsedTime >= 20) { // End the game after the song duration
                 background = gameOverScreen;
                 g.drawImage(backHomeButton, 30,20,null);
 
                 backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
-                try {
-                    miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
-                } catch (IOException ex) {
-                    ex.getMessage();
-                    System.out.println("ahh");
-                }
-                g.drawString("Final Score: " + player.getScore(), 20, 50);
-                g.drawString("Number of correct moves:  " + correctCount, 20, 100);
-                g.drawString("Number of incorrect moves: " + incorrectCount, 20, 150);
+//                try {
+//                    miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
+//                } catch (IOException ex) {
+//                    ex.getMessage();
+//                    System.out.println("ahh");
+//                }
+
+                g.setFont(new Font("Arial", Font.BOLD, 50));
+                g.setColor(Color.WHITE);
+                g.drawString("Final Score: " + player.getScore(), 500, 80);
+                g.setFont(new Font("Arial", Font.BOLD, 50));
+                g.setColor(Color.WHITE);
+                g.drawString("Number of correct moves:  " + correctCount, 500, 120);
+                g.setFont(new Font("Arial", Font.BOLD, 50));
+                g.setColor(Color.WHITE);
+                g.drawString("Number of incorrect moves: " + incorrectCount, 500, 160);
                 gameTimer.stop();
                 song.close();
                 playingGame = false;
@@ -550,7 +572,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     private boolean switchPlayerPose() {
-        boolean result = (comboElapsedTime % 2 == 0 &&  comboElapsedTime > 10);
+        boolean result = (comboElapsedTime % speedControl == 0 &&  comboElapsedTime > speed);
         System.out.println("switchPlayerPose: " + result + " comboElapsedTime: " + comboElapsedTime);
         return result;
     }
@@ -590,6 +612,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
             repaint();
         }
+        hitAlready = false;
+        hitInTime = false;
     }
 
 
