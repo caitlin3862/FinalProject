@@ -276,6 +276,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
 
             if (elapsedTime >= 30) { // End the game after the song duration
+                background = gameOverScreen;
                 g.drawImage(backHomeButton, 30,20,null);
 
                 backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
@@ -290,7 +291,6 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     ex.getMessage();
                     System.out.println("ahh");
                 }
-                background = gameOverScreen;
                 //isTitleScreen = true;
                 //background = homeScreen;
                 repaint();
@@ -400,7 +400,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
-            elapsedTime++;
+            if (e.getSource().equals(gameTimer)){
+                elapsedTime++;
+            }
             millerElapsedTime++;
             if (e.getSource() == millerTimer) {
                 // Change Miller's pose every 5 seconds
