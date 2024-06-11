@@ -31,6 +31,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     private Clip song;
     private Timer gameTimer;
+    private Timer millerTimer;
 
     private Boss miller;
     private PlayerMoves player;
@@ -71,6 +72,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         playingGame = false;
         miller = new Boss();
         player = new PlayerMoves();
+        millerTimer = new Timer(5000, this);
         elapsedTime = 0;
         move = new Move();
         firstHalfImages = new BufferedImage[9];
@@ -101,8 +103,10 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         } else {
             g.drawImage(background,0,0,null);
             g.drawString("Time: " + elapsedTime, 20, 100);
-            if (elapsedTime % 5 == 0) {
-                miller.chooseNextPose();
+            try {
+                miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/idol.png")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             g.drawImage(miller.getCurrentPose(), 975, 50, null);
             int x = 20;
@@ -207,6 +211,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 isTitleScreen = false;
                 playingGame = true;
                 gameTimer.start();
+                millerTimer.start();
                 startMusic();
                 repaint();
             }
@@ -233,10 +238,17 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     /* ACTION LISTENER METHODS */
 
-    @Override
+   @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof Timer){
+        if (e.getSource() instanceof Timer) {
             elapsedTime++;
+            if (playingGame) {
+                if (e.getSource() == millerTimer) {
+                    // Change Miller's pose every 5 seconds
+                    miller.chooseNextPose();
+                    repaint();
+                }
+            }
         }
     }
 
