@@ -47,6 +47,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private Clip song;
     private Timer gameTimer;
     private Timer millerTimer;
+    private Timer comboTimer;
 
     private Boss miller;
     private PlayerMoves player;
@@ -55,15 +56,20 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private boolean isTitleScreen;
     private boolean playingGame;
     private boolean firstHalf;
-    private int correctCount;
-    private int incorrectCount;
+    private boolean hitInTime;
+    private boolean hitAlready;
 
     private ArrayList<Integer> trueCombo;
 
     private int elapsedTime;
     private int millerElapsedTime;
+    private int comboElapsedTime;
     private int playButtonX;
     private int trueComboIdx;
+    private int correctCount;
+    private int incorrectCount;
+    private int comboStreak;
+
 
 
 
@@ -98,6 +104,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         isTitleScreen = true;
         playingGame = false;
         firstHalf = true;
+        hitInTime = false;
+        hitAlready = false;
 
         miller = new Boss();
         player = new PlayerMoves();
@@ -127,9 +135,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         gameTimer = new Timer(1000,this);
         millerTimer = new Timer(1000, this);
+        comboTimer = new Timer(1500,this);
         elapsedTime = 0;
         millerElapsedTime = 0;
         trueComboIdx = 0;
+        comboStreak = 0;
 
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -167,6 +177,8 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             g.drawImage(background,0,0,null);
             g.setColor(Color.WHITE);
             g.drawString("Time: " + elapsedTime, 20, 100);
+            g.drawString("Time: " + comboElapsedTime, 20, 120);
+            g.drawString("Combo: " + comboStreak, 20, 140);
             if (elapsedTime == 1){
                 g.setFont(new Font("Arial", Font.BOLD, 90));
                 g.setColor(Color.WHITE);
@@ -241,9 +253,22 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 System.out.println("pressed 9");
             }
 
-            if (switchPose()){
-                current = miller.getCurrentPose();
+            if(elapsedTime >= 9) {
+                if (switchPose()) {
+                    current = miller.getCurrentPose();
+                }
+                if (switchPlayerPose()) {
+                    setPlayerCurrentPose();
+                    if (!hitInTime){
+                        comboStreak = 0;
+                    }
+                    hitAlready = false;
+                    comboElapsedTime = 0;
+                }
             }
+
+
+
 
 
 
@@ -410,6 +435,11 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
             if (e.getSource().equals(gameTimer)){
                 elapsedTime++;
             }
+            comboElapsedTime++;
+            if (e.getSource() == comboTimer){
+                playerCurrentPose = move.pickRandPose(currentImages, firstHalf);
+                repaint();
+            }
             millerElapsedTime++;
             if (e.getSource() == millerTimer) {
                 // Change Miller's pose every 5 seconds
@@ -490,7 +520,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         int key = e.getKeyCode();
         pressedKeys[key] = false;
         player.getPlayerMoves().add(0);
-        setPlayerCurrentPose();
+        if (comboElapsedTime < 3 && !hitAlready) {
+            comboStreak++;
+            hitAlready = true;
+            hitInTime = true;
+        } else {
+            hitInTime = false;
+        }
+        //setPlayerCurrentPose();
     }
 
     /* PRIVATE HELPER METHODS */
@@ -508,6 +545,14 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     private boolean switchPose(){
         if (millerElapsedTime % 2 == 0 && millerElapsedTime > 10){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean switchPlayerPose(){
+        if (comboElapsedTime > 3){
             return true;
         } else {
             return false;
