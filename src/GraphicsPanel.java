@@ -179,50 +179,50 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
             // playing game screen
             g.drawImage(background,0,0,null);
-            g.setColor(Color.WHITE);
+            g.setColor(Color.GREEN);
             g.drawString("Time: " + elapsedTime, 20, 100);
             g.drawString("Time: " + comboElapsedTime, 20, 120);
             g.setFont(new Font("Arial", Font.BOLD, 70));
-            g.setColor(Color.WHITE);
+            g.setColor(Color.GREEN);
             g.drawString("Combo: " + comboStreak, 550, 140);
             if (elapsedTime == 1){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("7", 700,400);
             }
             if (elapsedTime == 2){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("6", 700,400);
             }
             if (elapsedTime == 3){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("5", 700,400);
             }
             if (elapsedTime == 4){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("4", 700,400);
             }
             if (elapsedTime == 5){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("3", 700,400);
             }
             if (elapsedTime == 6){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("2", 700,400);
             }
             if (elapsedTime == 7){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("1", 700,400);
             }
             if (elapsedTime == 8){
-                g.setFont(new Font("Arial", Font.BOLD, 90));
-                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 120));
+                g.setColor(Color.GREEN);
                 g.drawString("DANCE!", 550,400);
             }
 
