@@ -80,8 +80,7 @@ public class Move {
     }
 
     public BufferedImage pickRandPose(BufferedImage[] images, boolean firstHalf){
-        int rand = (int) (Math.random() * images.length);
-        BufferedImage img;
+        int rand = (int) (Math.random() * 9);
         if (firstHalf) {
             if (rand == 0) {
                 return bigImages[0];
