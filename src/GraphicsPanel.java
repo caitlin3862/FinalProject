@@ -583,7 +583,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     private boolean switchPose(){
-        if (millerElapsedTime % 2 == 0 && millerElapsedTime > 10){
+        if (millerElapsedTime % 1.5 == 0 && millerElapsedTime > 10){
             return true;
         } else {
             return false;
