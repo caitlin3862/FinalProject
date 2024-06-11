@@ -63,6 +63,7 @@ public class Move {
 
         } catch (IOException e) {
             e.getMessage();
+            System.out.println("moves");
         }
     }
 

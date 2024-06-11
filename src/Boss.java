@@ -41,6 +41,7 @@ public class Boss {
             poses[11] = ImageIO.read(new File("src/millerSprites/superman.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            System.out.println("boss");
         }
         currentPose = sprite;
     }

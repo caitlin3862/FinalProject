@@ -41,7 +41,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private Rectangle exitRect;
     private Rectangle playRect;
     private Rectangle rulesRect;
-    private Rectangle backHomeRect;
+    private Rectangle backHomeRect = new Rectangle(30, 20, 133, 70);
 
 
     private Clip song;
@@ -61,6 +61,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     private int elapsedTime;
     private int millerElapsedTime;
     private int playButtonX;
+    private int trueComboIdx;
 
 
 
@@ -85,6 +86,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            System.out.println("boo");
         }
         background = homeScreen;
 
@@ -122,12 +124,16 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         currentBig = firstBig;
 
         gameTimer = new Timer(1000,this);
-        millerTimer = new Timer(5000, this);
+        millerTimer = new Timer(2000, this);
         elapsedTime = 0;
         millerElapsedTime = 0;
+        trueComboIdx = 0;
 
         addMouseListener(this);
         addMouseMotionListener(this);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
     }
 
 
@@ -153,7 +159,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
         } else if (playingGame) {
             generateCombo();
-            playerCurrentPose = currentBig[trueCombo.get(0)];
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
 
             // playing game screen
             g.drawImage(background,0,0,null);
@@ -175,34 +181,63 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 g.drawString("5", 700,400);
             }
             if (elapsedTime == 4){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("4", 700,400);
             }
             if (elapsedTime == 5){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("3", 700,400);
             }
             if (elapsedTime == 6){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("2", 700,400);
             }
             if (elapsedTime == 7){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
                 g.drawString("1", 700,400);
             }
             if (elapsedTime == 8){
-                g.setFont(new Font("Arial", Font.BOLD, 60));
+                g.setFont(new Font("Arial", Font.BOLD, 70));
                 g.setColor(Color.WHITE);
-                g.drawString("DANCE!", 600,400);
+                g.drawString("DANCE!", 550,400);
             }
 
 
             g.drawImage(current, 975, 50, null);
             g.drawImage(playerCurrentPose, 200, 50, null);
+
+
+            if(pressedKeys[49]){
+                System.out.println("pressed 1");
+            }
+            if(pressedKeys[50]){
+                System.out.println("pressed 2");
+            }
+            if(pressedKeys[51]){
+                System.out.println("pressed 3");
+            }
+            if(pressedKeys[52]){
+                System.out.println("pressed 4");;
+            }
+            if(pressedKeys[53]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[54]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[55]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[56]){
+                System.out.println("pressed 9");
+            }
+            if(pressedKeys[57]){
+                System.out.println("pressed 9");
+            }
 
             if (switchPose()){
                 current = miller.getCurrentPose();
@@ -220,10 +255,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     x += 145;
                 }
                 x = 20;
+                //keyPresses();
             }
             // Switch to the second set of moves after 82 seconds
             if (elapsedTime > 15 && elapsedTime < 30) { // Switch to the second set of moves after 82 seconds
                 currentImages = secondHalfImages;
+                currentBig = secondBig;
                 firstHalf = false;
                 for (int i = 0; i < currentImages.length; i++) {
                     g.drawImage(currentImages[i], x, 610, null);
@@ -233,12 +270,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     x += 140;
                 }
                 x = 20;
+                //keyPresses();
             }
 
 
 
             if (elapsedTime >= 30) { // End the game after the song duration
-                background = gameOverScreen;
                 g.drawImage(backHomeButton, 30,20,null);
 
                 backHomeRect = new Rectangle(30, 20, backHomeButton.getWidth(), backHomeButton.getHeight());
@@ -251,7 +288,9 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                     miller.setCurrentPose(ImageIO.read(new File("src/millerSprites/shocked.png")));
                 } catch (IOException ex) {
                     ex.getMessage();
+                    System.out.println("ahh");
                 }
+                background = gameOverScreen;
                 //isTitleScreen = true;
                 //background = homeScreen;
                 repaint();
@@ -274,34 +313,12 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
           // }
 
 
-            if(pressedKeys[49]){
-                player.getPlayerMoves().add(0);
+            for (int i = 0; i < player.getPlayerMoves().size(); i++){
+                if (trueCombo.get(i).equals(player.getPlayerMoves().get(i))){
+                    player.addScore(50);
+                    player.clearCombo();
+                }
             }
-            if(pressedKeys[50]){
-                player.getPlayerMoves().add(1);
-            }
-            if(pressedKeys[51]){
-                player.getPlayerMoves().add(2);
-            }
-            if(pressedKeys[52]){
-                player.getPlayerMoves().add(3);
-            }
-            if(pressedKeys[53]){
-                player.getPlayerMoves().add(4);
-            }
-            if(pressedKeys[54]){
-                player.getPlayerMoves().add(5);
-            }
-            if(pressedKeys[55]){
-                player.getPlayerMoves().add(6);
-            }
-            if(pressedKeys[56]){
-                player.getPlayerMoves().add(7);
-            }
-            if(pressedKeys[57]){
-                player.getPlayerMoves().add(8);
-            }
-
 
 
 
@@ -409,6 +426,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 exitButton = ImageIO.read(new File("src/homeScreenImgs/exit.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("adfds");
             }
         }
         if (playRect.contains(e.getPoint())){
@@ -420,6 +438,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 playButtonX = 606;
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("play");
             }
         }
         if (rulesRect.contains(e.getPoint())) {
@@ -429,6 +448,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 rulesButton = ImageIO.read(new File("src/homeScreenImgs/rules.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("rules");
             }
         }
         if (backHomeRect.contains(e.getPoint())){
@@ -438,6 +458,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
                 backHomeButton = ImageIO.read(new File("src/rulesScreenImgs/backHome.png"));
             } catch (IOException exception){
                 System.out.println(exception.getMessage());
+                System.out.println("home");
             }
         }
 
@@ -451,12 +472,16 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int key = e.getKeyCode();
+        pressedKeys[key] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        int key = e.getKeyCode();
+        pressedKeys[key] = false;
+        player.getPlayerMoves().add(0);
+        setPlayerCurrentPose();
     }
 
     /* PRIVATE HELPER METHODS */
@@ -473,7 +498,7 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
     }
 
     private boolean switchPose(){
-        if (millerElapsedTime % 3 == 0 && millerElapsedTime > 8){
+        if (millerElapsedTime % 2 == 0 && millerElapsedTime > 8){
             return true;
         } else {
             return false;
@@ -505,9 +530,18 @@ public class GraphicsPanel extends JPanel implements MouseListener, ActionListen
         }
     }
 
-    private void setPlayerCurrentPose(BufferedImage pose) {
-        playerCurrentPose = move.pickRandPose(currentImages, firstHalf);
+    private void setPlayerCurrentPose() {
+        if (trueComboIdx + 1 < 9) {
+            trueComboIdx++;
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
+            repaint();
+        } else {
+            trueComboIdx = 0;
+            playerCurrentPose = currentBig[trueCombo.get(trueComboIdx)];
+            repaint();
+        }
     }
+
 
 
 
